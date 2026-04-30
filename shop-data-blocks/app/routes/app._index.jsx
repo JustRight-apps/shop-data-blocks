@@ -21,18 +21,33 @@ export default function Index() {
         </s-paragraph>
       </s-section>
 
-      {items.map((block) => (
-        <s-section key={block.id} heading={block.title}>
-          <s-stack direction="block" gap="base">
-            <s-paragraph>{block.description}</s-paragraph>
-            <s-stack direction="inline" gap="base">
-              <s-button href={block.editorPath} variant="primary">
+      {items.map((block) => {
+        const menuId = `scope-menu-${block.id}`;
+        return (
+          <s-section key={block.id} heading={block.title}>
+            <s-stack direction="block" gap="base">
+              <s-paragraph>{block.description}</s-paragraph>
+              <s-button variant="primary" commandFor={menuId}>
                 Open editor
               </s-button>
+              <s-menu
+                id={menuId}
+                accessibilityLabel={`Choose ${block.title} scope`}
+              >
+                {block.scopes.map((scope) => (
+                  <s-button
+                    key={scope.value}
+                    icon={scope.icon}
+                    href={`${block.editorPath}?ownerType=${scope.value}`}
+                  >
+                    {scope.label}
+                  </s-button>
+                ))}
+              </s-menu>
             </s-stack>
-          </s-stack>
-        </s-section>
-      ))}
+          </s-section>
+        );
+      })}
     </s-page>
   );
 }
