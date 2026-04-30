@@ -21,6 +21,7 @@ database.sqlite
 
 
 /extensions/*/dist
+/extensions/*/shopify.d.ts
 
 # Ignore shopify files created during app dev
 .shopify/*
