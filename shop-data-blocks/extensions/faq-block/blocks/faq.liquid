@@ -1,0 +1,439 @@
+{%- liquid
+  assign source = block.settings.source
+  assign metafield = nil
+
+  if source == 'shop'
+    assign metafield = shop.metafields["$app"]["faq"]
+  else
+    if product != blank
+      assign metafield = product.metafields["$app"]["faq"]
+    elsif collection != blank
+      assign metafield = collection.metafields["$app"]["faq"]
+    elsif article != blank
+      assign metafield = article.metafields["$app"]["faq"]
+    elsif blog != blank
+      assign metafield = blog.metafields["$app"]["faq"]
+    endif
+
+    if metafield == blank
+      assign metafield = shop.metafields["$app"]["faq"]
+    endif
+  endif
+
+  assign data = metafield.value
+  assign items = data.items
+  assign layout = block.settings.layout
+  assign default_open = block.settings.default_open
+  assign single_open = block.settings.single_open
+  assign separator = block.settings.separator
+  assign icon_style = block.settings.icon_style
+  assign heading_size = block.settings.heading_size
+  assign question_size = block.settings.question_size
+  assign answer_size = block.settings.answer_size
+  assign max_width = block.settings.max_width
+  assign alignment = block.settings.heading_alignment
+  assign font = block.settings.font
+
+  case heading_size
+    when 'small'
+      assign heading_size_value = '1.25rem'
+    when 'medium'
+      assign heading_size_value = '1.75rem'
+    when 'large'
+      assign heading_size_value = '2.5rem'
+    when 'xlarge'
+      assign heading_size_value = '3rem'
+  endcase
+
+  case question_size
+    when 'small'
+      assign question_size_value = '1rem'
+    when 'medium'
+      assign question_size_value = '1.25rem'
+    when 'large'
+      assign question_size_value = '1.5rem'
+    when 'xlarge'
+      assign question_size_value = '1.75rem'
+  endcase
+
+  case answer_size
+    when 'small'
+      assign answer_size_value = '1rem'
+    when 'medium'
+      assign answer_size_value = '1.125rem'
+    when 'large'
+      assign answer_size_value = '1.375rem'
+    when 'xlarge'
+      assign answer_size_value = '1.625rem'
+  endcase
+
+  case max_width
+    when 'narrow'
+      assign max_width_value = '640px'
+    when 'medium'
+      assign max_width_value = '960px'
+    when 'wide'
+      assign max_width_value = '1200px'
+    else
+      assign max_width_value = '100%'
+  endcase
+-%}
+
+{%- if items != blank and items.size > 0 -%}
+  {{ 'faq.css' | asset_url | stylesheet_tag }}
+  {%- if font -%}
+    {%- style -%}
+      {{ font | font_face: font_display: 'swap' }}
+    {%- endstyle -%}
+  {%- endif -%}
+  <section
+    class="shop-data-faq shop-data-faq--{{ layout }} shop-data-faq--separator-{{ separator }} shop-data-faq--icon-{{ icon_style }} shop-data-faq--align-{{ alignment }}"
+    id="shop-data-faq-{{ block.id }}"
+    {% if single_open %}data-single-open="true"{% endif %}
+    style="
+      --faq-padding-y: {{ block.settings.padding_block }}px;
+      --faq-padding-x: {{ block.settings.padding_inline }}px;
+      --faq-item-spacing: {{ block.settings.item_spacing }}px;
+      --faq-heading-size: {{ heading_size_value }};
+      --faq-question-size: {{ question_size_value }};
+      --faq-answer-size: {{ answer_size_value }};
+      --faq-question-weight: {{ block.settings.question_weight }};
+      --faq-radius: {{ block.settings.border_radius }}px;
+      --faq-max-width: {{ max_width_value }};
+      {%- if block.settings.heading_color != blank -%}--faq-heading-color: {{ block.settings.heading_color }};{%- endif -%}
+      {%- if block.settings.question_color != blank -%}--faq-question-color: {{ block.settings.question_color }};{%- endif -%}
+      {%- if block.settings.answer_color != blank -%}--faq-answer-color: {{ block.settings.answer_color }};{%- endif -%}
+      {%- if block.settings.border_color != blank -%}--faq-border-color: {{ block.settings.border_color }};{%- endif -%}
+      {%- if block.settings.background != blank -%}--faq-background: {{ block.settings.background }};{%- endif -%}
+      {%- if font -%}
+      --faq-font-family: {{ font.family }}, {{ font.fallback_families }};
+      --faq-font-weight: {{ font.weight }};
+      --faq-font-style: {{ font.style }};
+      {%- endif -%}
+    "
+    {{ block.shopify_attributes }}
+  >
+    <div class="shop-data-faq__inner">
+      {%- if block.settings.heading != blank -%}
+        <h2 class="shop-data-faq__heading">{{ block.settings.heading | escape }}</h2>
+      {%- endif -%}
+
+      {%- if layout == 'accordion' -%}
+        <ul class="shop-data-faq__list" role="list">
+          {%- for item in items -%}
+            <li class="shop-data-faq__item">
+              <details class="shop-data-faq__details"{% if default_open %} open{% endif %}>
+                <summary class="shop-data-faq__question">
+                  <span class="shop-data-faq__question-text">{{ item.question | escape }}</span>
+                  {%- if icon_style != 'none' -%}
+                    <span class="shop-data-faq__icon" aria-hidden="true"></span>
+                  {%- endif -%}
+                </summary>
+                <div class="shop-data-faq__answer">
+                  {{ item.answer | escape | newline_to_br }}
+                </div>
+              </details>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- else -%}
+        <dl class="shop-data-faq__list">
+          {%- for item in items -%}
+            <div class="shop-data-faq__item">
+              <dt class="shop-data-faq__question">{{ item.question | escape }}</dt>
+              <dd class="shop-data-faq__answer">{{ item.answer | escape | newline_to_br }}</dd>
+            </div>
+          {%- endfor -%}
+        </dl>
+      {%- endif -%}
+    </div>
+  </section>
+
+  {%- if single_open and layout == 'accordion' -%}
+    <script src="{{ 'faq.js' | asset_url }}" defer></script>
+  {%- endif -%}
+
+  {%- if block.settings.emit_jsonld -%}
+    {%- capture faq_jsonld -%}
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {%- for item in items -%}
+            {
+              "@type": "Question",
+              "name": {{ item.question | json }},
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": {{ item.answer | json }}
+              }
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]
+      }
+    {%- endcapture -%}
+    <script type="application/ld+json">{{ faq_jsonld }}</script>
+  {%- endif -%}
+{%- elsif request.design_mode -%}
+  {{ 'faq.css' | asset_url | stylesheet_tag }}
+  <section class="shop-data-faq shop-data-faq--empty" {{ block.shopify_attributes }}>
+    <h2 class="shop-data-faq__heading">FAQ block</h2>
+    <p>No questions to display. Add FAQs to this resource in the app, or change the data source. (This message only appears in the theme editor.)</p>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "FAQ",
+  "target": "section",
+  "enabled_on": {
+    "templates": ["product", "collection", "article", "blog", "index", "page"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently asked questions"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Data source",
+      "info": "Auto reads FAQs from the current page's resource and falls back to the shop. Shop forces shop-level FAQs.",
+      "options": [
+        { "value": "auto", "label": "Auto-detect" },
+        { "value": "shop", "label": "Shop-level only" }
+      ],
+      "default": "auto"
+    },
+
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "accordion", "label": "Accordion" },
+        { "value": "flat", "label": "Flat list" }
+      ],
+      "default": "accordion"
+    },
+    {
+      "type": "checkbox",
+      "id": "default_open",
+      "label": "Open all questions by default",
+      "info": "Accordion layout only.",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "single_open",
+      "label": "Only one question open at a time",
+      "info": "Accordion layout only. Closes other questions when one is opened.",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "icon_style",
+      "label": "Icon",
+      "options": [
+        { "value": "plus", "label": "Plus / minus" },
+        { "value": "chevron", "label": "Chevron" },
+        { "value": "caret", "label": "Caret" },
+        { "value": "none", "label": "None" }
+      ],
+      "default": "plus"
+    },
+    {
+      "type": "select",
+      "id": "separator",
+      "label": "Separator style",
+      "options": [
+        { "value": "divider", "label": "Divider lines" },
+        { "value": "box", "label": "Boxed items" },
+        { "value": "none", "label": "None" }
+      ],
+      "default": "divider"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Container width",
+      "options": [
+        { "value": "narrow", "label": "Narrow (640px)" },
+        { "value": "medium", "label": "Medium (960px)" },
+        { "value": "wide", "label": "Wide (1200px)" },
+        { "value": "full", "label": "Full width" }
+      ],
+      "default": "medium"
+    },
+
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "font_picker",
+      "id": "font",
+      "label": "Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "xlarge", "label": "Extra large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "question_size",
+      "label": "Question size",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "xlarge", "label": "Extra large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "question_weight",
+      "label": "Question weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "select",
+      "id": "answer_size",
+      "label": "Answer size",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "xlarge", "label": "Extra large" }
+      ],
+      "default": "medium"
+    },
+
+    {
+      "type": "header",
+      "content": "Colors",
+      "info": "Leave any color blank to inherit from the surrounding theme section."
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "color",
+      "id": "question_color",
+      "label": "Question color"
+    },
+    {
+      "type": "color",
+      "id": "answer_color",
+      "label": "Answer color"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border / divider color"
+    },
+    {
+      "type": "color_background",
+      "id": "background",
+      "label": "Section background"
+    },
+
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "item_spacing",
+      "label": "Space between items",
+      "unit": "px",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Corner radius",
+      "info": "Boxed separator only.",
+      "unit": "px",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "padding_block",
+      "label": "Section padding (top/bottom)",
+      "unit": "px",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_inline",
+      "label": "Section padding (left/right)",
+      "unit": "px",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "default": 16
+    },
+
+    {
+      "type": "header",
+      "content": "SEO"
+    },
+    {
+      "type": "checkbox",
+      "id": "emit_jsonld",
+      "label": "Emit FAQPage structured data (JSON-LD)",
+      "info": "Helps search engines display rich results. Recommended.",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

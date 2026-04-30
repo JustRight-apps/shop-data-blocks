@@ -1,0 +1,24 @@
+{
+  "blocks": {
+    "faq": {
+      "name": "FAQ",
+      "settings": {
+        "heading": {
+          "label": "Heading"
+        },
+        "source": {
+          "label": "Data source"
+        },
+        "layout": {
+          "label": "Layout"
+        },
+        "default_open": {
+          "label": "Open all questions by default"
+        },
+        "emit_jsonld": {
+          "label": "Emit FAQPage structured data (JSON-LD)"
+        }
+      }
+    }
+  }
+}

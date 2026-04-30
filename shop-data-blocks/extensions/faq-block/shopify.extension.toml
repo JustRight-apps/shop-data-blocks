@@ -1,0 +1,7 @@
+api_version = "2025-10"
+uid = "c4863702-5094-53d2-1c21-868f154dd20d89609430"
+
+[[extensions]]
+name = "FAQ Block"
+handle = "faq-block"
+type = "theme"
