@@ -1,0 +1,18 @@
+{
+  "name": "FAQ",
+  "description": "Modifier les FAQ de ce produit",
+  "loading": "Chargement des FAQ…",
+  "loadingAccessibility": "Chargement des FAQ",
+  "loadError": "Impossible de charger les FAQ.",
+  "saveError": "L'enregistrement a échoué.",
+  "question": "Question {{n}}",
+  "answer": "Réponse",
+  "moveUp": "Monter",
+  "moveDown": "Descendre",
+  "remove": "Supprimer",
+  "discard": "Annuler",
+  "save": "Enregistrer",
+  "addQuestion": "Ajouter une question",
+  "untitled": "Sans titre",
+  "emptyState": "Aucune question. Ajoutez-en une depuis la liste à droite."
+}

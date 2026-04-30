@@ -1,0 +1,18 @@
+{
+  "name": "FAQs",
+  "description": "Edit FAQs for this product",
+  "loading": "Loading FAQs…",
+  "loadingAccessibility": "Loading FAQs",
+  "loadError": "Could not load FAQs.",
+  "saveError": "Save failed.",
+  "question": "Question {{n}}",
+  "answer": "Answer",
+  "moveUp": "Move up",
+  "moveDown": "Move down",
+  "remove": "Remove",
+  "discard": "Discard",
+  "save": "Save",
+  "addQuestion": "Add question",
+  "untitled": "Untitled",
+  "emptyState": "No questions yet. Add one from the list on the right."
+}
