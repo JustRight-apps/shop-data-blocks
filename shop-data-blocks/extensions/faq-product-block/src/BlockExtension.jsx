@@ -250,33 +250,33 @@ function Extension() {
                   align-items="center"
                 >
                   <s-stack direction="inline" gap="small-100">
-                    <s-button
-                      variant="tertiary"
-                      icon="arrow-up"
-                      accessibility-label={t("moveUp")}
-                      interest-for="faq-tip-move-up"
-                      disabled={safeActiveIndex === 0}
-                      onClick={() => moveItem(safeActiveIndex, -1)}
-                    />
                     <s-tooltip id="faq-tip-move-up">{t("moveUp")}</s-tooltip>
                     <s-button
                       variant="tertiary"
-                      icon="arrow-down"
-                      accessibility-label={t("moveDown")}
-                      interest-for="faq-tip-move-down"
-                      disabled={safeActiveIndex === items.length - 1}
-                      onClick={() => moveItem(safeActiveIndex, 1)}
+                      icon="arrow-up"
+                      accessibilityLabel={t("moveUp")}
+                      interestFor="faq-tip-move-up"
+                      disabled={safeActiveIndex === 0}
+                      onClick={() => moveItem(safeActiveIndex, -1)}
                     />
                     <s-tooltip id="faq-tip-move-down">{t("moveDown")}</s-tooltip>
                     <s-button
                       variant="tertiary"
-                      tone="critical"
-                      icon="delete"
-                      accessibility-label={t("remove")}
-                      interest-for="faq-tip-remove"
-                      onClick={() => removeItem(safeActiveIndex)}
+                      icon="arrow-down"
+                      accessibilityLabel={t("moveDown")}
+                      interestFor="faq-tip-move-down"
+                      disabled={safeActiveIndex === items.length - 1}
+                      onClick={() => moveItem(safeActiveIndex, 1)}
                     />
                     <s-tooltip id="faq-tip-remove">{t("remove")}</s-tooltip>
+                    <s-button
+                      variant="tertiary"
+                      tone="critical"
+                      icon="delete"
+                      accessibilityLabel={t("remove")}
+                      interestFor="faq-tip-remove"
+                      onClick={() => removeItem(safeActiveIndex)}
+                    />
                   </s-stack>
                   <s-stack direction="inline" gap="small-100">
                     <s-button
