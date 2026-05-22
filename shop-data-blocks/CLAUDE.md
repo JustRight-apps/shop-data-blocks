@@ -752,6 +752,6 @@ require this initial deploy.
 - **Shopify app server adapter:** `@shopify/shopify-app-react-router`
 - **Embedded app UI:** Polaris **web components** (`<s-page>`, `<s-section>`, `<s-stack>`, etc.) — NOT the React Polaris library
 - **App Bridge:** `@shopify/app-bridge-react` (for SaveBar, resourcePicker, toast, intents)
-- **Database:** Prisma + SQLite for **session storage only**. Block data lives in Shopify metafields, not Prisma.
+- **Database:** Prisma + Postgres for **session storage only** (driven by `DATABASE_URL`). Block data lives in Shopify metafields, not Prisma.
 - **Admin API version:** `2025-10` (set in [app/shopify.server.js](app/shopify.server.js) and extension toml files)
 - **Webhook API version:** `2026-07` (set in [shopify.app.toml](shopify.app.toml))
