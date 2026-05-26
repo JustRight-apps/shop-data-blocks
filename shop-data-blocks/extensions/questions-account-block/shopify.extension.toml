@@ -1,0 +1,11 @@
+api_version = "2025-10"
+uid = "806fdd3b-c14b-6ca1-dbb7-d0446bdfb94708af19a7"
+
+[[extensions]]
+name = "t:name"
+handle = "questions-account-block"
+type = "ui_extension"
+
+[[extensions.targeting]]
+module = "./src/AccountBlockExtension.jsx"
+target = "customer-account.profile.block.render"

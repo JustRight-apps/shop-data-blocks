@@ -22,28 +22,37 @@ export default function Index() {
       </s-section>
 
       {items.map((block) => {
+        const hasScopes = block.scopes && block.scopes.length > 0;
         const menuId = `scope-menu-${block.id}`;
         return (
           <s-section key={block.id} heading={block.title}>
             <s-stack direction="block" gap="base">
               <s-paragraph>{block.description}</s-paragraph>
-              <s-button variant="primary" commandFor={menuId}>
-                Open editor
-              </s-button>
-              <s-menu
-                id={menuId}
-                accessibilityLabel={`Choose ${block.title} scope`}
-              >
-                {block.scopes.map((scope) => (
-                  <s-button
-                    key={scope.value}
-                    icon={scope.icon}
-                    href={`${block.editorPath}?ownerType=${scope.value}`}
-                  >
-                    {scope.label}
+              {hasScopes ? (
+                <>
+                  <s-button variant="primary" commandFor={menuId}>
+                    {block.openLabel ?? "Open editor"}
                   </s-button>
-                ))}
-              </s-menu>
+                  <s-menu
+                    id={menuId}
+                    accessibilityLabel={`Choose ${block.title} scope`}
+                  >
+                    {block.scopes.map((scope) => (
+                      <s-button
+                        key={scope.value}
+                        icon={scope.icon}
+                        href={`${block.editorPath}?ownerType=${scope.value}`}
+                      >
+                        {scope.label}
+                      </s-button>
+                    ))}
+                  </s-menu>
+                </>
+              ) : (
+                <s-button variant="primary" href={block.editorPath}>
+                  {block.openLabel ?? "Open editor"}
+                </s-button>
+              )}
             </s-stack>
           </s-section>
         );

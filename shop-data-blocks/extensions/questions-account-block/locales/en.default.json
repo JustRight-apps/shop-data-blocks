@@ -1,0 +1,17 @@
+{
+  "name": "My questions",
+  "loading": "Loading your questions…",
+  "loadingAccessibility": "Loading your questions",
+  "loadError": "Could not load your questions.",
+  "emptyState": "You haven't asked any product questions yet.",
+  "status_awaiting_merchant": "Sent",
+  "status_awaiting_customer": "Reply received",
+  "status_promoted": "Published as FAQ",
+  "youLabel": "You",
+  "storeLabel": "Store",
+  "replyPlaceholder": "Write a follow-up…",
+  "sendReply": "Send reply",
+  "replyError": "Failed to send. Please try again.",
+  "sending": "Sending…",
+  "viewProduct": "View product"
+}

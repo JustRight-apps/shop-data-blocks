@@ -2,17 +2,105 @@
 
 client_id = "e46c02277ad07a42ec012f95ba8ded85"
 name = "Questions & Reviews"
-application_url = "https://shop-data-blocks.onrender.com"
+application_url = "https://just-right.net"
 embedded = true
 
 [webhooks]
 api_version = "2026-04"
 
+  [[webhooks.subscriptions]]
+  topics = [ "app/uninstalled" ]
+  uri = "/webhooks/app/uninstalled"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/scopes_update" ]
+  uri = "/webhooks/app/scopes_update"
+
+  [[webhooks.subscriptions]]
+  compliance_topics = [ "customers/data_request", "customers/redact", "shop/redact" ]
+  uri = "/webhooks/gdpr"
+
 [access_scopes]
-# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "write_markets,write_products,write_content"
+scopes = "write_markets,write_products,write_content,read_customers,write_customers"
 optional_scopes = [ ]
 use_legacy_install_flow = false
 
 [auth]
-redirect_urls = [ ]
+redirect_urls = [ "https://just-right.net/auth/callback" ]
+
+[app_proxy]
+url = "https://just-right.net/proxy"
+subpath = "questions"
+prefix = "apps"
+
+[product.metafields.app.faq]
+name = "FAQ"
+type = "json"
+description = "Frequently asked questions attached to this product."
+
+  [product.metafields.app.faq.access]
+  admin = "merchant_read_write"
+
+[variant.metafields.app.faq]
+name = "FAQ"
+type = "json"
+description = "Frequently asked questions attached to this variant."
+
+  [variant.metafields.app.faq.access]
+  admin = "merchant_read_write"
+
+[collection.metafields.app.faq]
+name = "FAQ"
+type = "json"
+description = "Frequently asked questions attached to this collection."
+
+  [collection.metafields.app.faq.access]
+  admin = "merchant_read_write"
+
+[shop.metafields.app.faq]
+name = "FAQ"
+type = "json"
+description = "Frequently asked questions attached to the shop."
+
+  [shop.metafields.app.faq.access]
+  admin = "merchant_read_write"
+
+[market.metafields.app.faq]
+name = "FAQ"
+type = "json"
+description = "Frequently asked questions attached to this market."
+
+  [market.metafields.app.faq.access]
+  admin = "merchant_read_write"
+
+[blog.metafields.app.faq]
+name = "FAQ"
+type = "json"
+description = "Frequently asked questions attached to this blog."
+
+  [blog.metafields.app.faq.access]
+  admin = "merchant_read_write"
+
+[article.metafields.app.faq]
+name = "FAQ"
+type = "json"
+description = "Frequently asked questions attached to this article."
+
+  [article.metafields.app.faq.access]
+  admin = "merchant_read_write"
+
+[customer.metafields.app.product_questions]
+name = "Product questions"
+type = "json"
+description = "Threaded conversations between this customer and the merchant about products."
+
+  [customer.metafields.app.product_questions.access]
+  admin = "merchant_read_write"
+
+[shop.metafields.app.question_inbox]
+name = "Question inbox"
+type = "json"
+description = "Lightweight index of customer question threads for the merchant inbox view."
+
+  [shop.metafields.app.question_inbox.access]
+  admin = "merchant_read_write"

@@ -15,4 +15,13 @@ export const blocks = [
       { value: "ARTICLE", label: "Article", icon: "page" },
     ],
   },
+  {
+    id: "questions",
+    title: "Customer Questions",
+    description:
+      "Inbox of product questions from logged-in shoppers. Answer privately by email, or promote an answered Q&A into the product's FAQ list.",
+    editorPath: "/app/blocks/questions",
+    openLabel: "Open inbox",
+    scopes: [],
+  },
 ];

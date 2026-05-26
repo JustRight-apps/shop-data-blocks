@@ -1,0 +1,117 @@
+{%- liquid
+  assign heading = block.settings.heading
+  assign placeholder = block.settings.placeholder
+  assign submit_label = block.settings.submit_label
+  assign login_prompt = block.settings.login_prompt
+  assign success_message = block.settings.success_message
+  assign accent_color = block.settings.accent_color
+-%}
+
+{{ 'questions-ask.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="shop-data-questions-ask"
+  id="shop-data-questions-ask-{{ block.id }}"
+  style="
+    {%- if accent_color != blank -%}--qa-accent: {{ accent_color }};{%- endif -%}
+  "
+  {{ block.shopify_attributes }}
+>
+  {%- if heading != blank -%}
+    <h2 class="shop-data-questions-ask__heading">{{ heading | escape }}</h2>
+  {%- endif -%}
+
+  {%- if customer == blank -%}
+    <p class="shop-data-questions-ask__login">
+      <a href="/account/login?return_url={{ request.path | url_encode }}">
+        {{ login_prompt | escape | default: 'Log in to ask a question' }}
+      </a>
+    </p>
+  {%- elsif product == blank -%}
+    {%- if request.design_mode -%}
+      <p>This block only renders on product pages.</p>
+    {%- endif -%}
+  {%- else -%}
+    <form
+      class="shop-data-questions-ask__form"
+      data-questions-ask
+      data-endpoint="{{ shop.url }}/apps/questions/submit"
+      data-product-id="gid://shopify/Product/{{ product.id }}"
+      data-success="{{ success_message | escape }}"
+    >
+      <label class="shop-data-questions-ask__label" for="qa-text-{{ block.id }}">
+        {{ 'Your question' }}
+      </label>
+      <textarea
+        class="shop-data-questions-ask__textarea"
+        id="qa-text-{{ block.id }}"
+        name="text"
+        rows="4"
+        required
+        minlength="3"
+        maxlength="2000"
+        placeholder="{{ placeholder | escape }}"
+      ></textarea>
+      <button class="shop-data-questions-ask__submit" type="submit">
+        {{ submit_label | escape | default: 'Send question' }}
+      </button>
+      <p class="shop-data-questions-ask__status" data-status role="status" aria-live="polite"></p>
+    </form>
+    <script src="{{ 'questions-ask.js' | asset_url }}" defer></script>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Ask a question",
+  "target": "section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Have a question about this product?"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Textarea placeholder",
+      "default": "Ask us anything…"
+    },
+    {
+      "type": "text",
+      "id": "submit_label",
+      "label": "Submit button label",
+      "default": "Send question"
+    },
+    {
+      "type": "text",
+      "id": "login_prompt",
+      "label": "Logged-out link text",
+      "default": "Log in to ask a question"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Thanks! We'll email you when we reply."
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color"
+    }
+  ]
+}
+{% endschema %}
