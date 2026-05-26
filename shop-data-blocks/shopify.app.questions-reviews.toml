@@ -97,6 +97,9 @@ description = "Threaded conversations between this customer and the merchant abo
   [customer.metafields.app.product_questions.access]
   admin = "merchant_read_write"
 
+[build]
+automatically_update_urls_on_dev = false
+
 [shop.metafields.app.question_inbox]
 name = "Question inbox"
 type = "json"
