@@ -11,6 +11,7 @@ import {
   newId,
 } from "./constants";
 import { bulkWriteFaq, readFaq } from "../faq/metafield.server";
+import { logQuestion } from "../../lib/log.server";
 
 const SHOP_QUERY = `#graphql
   query QuestionsShop {
@@ -197,6 +198,16 @@ export async function appendQuestion(admin, { customerId, productId, text }) {
     writeInbox(admin, inbox.shopId, newInboxThreads),
   ]);
 
+  logQuestion("question.created", {
+    thread_id: thread.id,
+    customer_id: customer.id,
+    customer_email: customer.email,
+    product_id: product.id,
+    product_title: product.title,
+    message_length: cleanedText.length,
+    inbox_size: newInboxThreads.length,
+  });
+
   return { thread, customer, product };
 }
 
@@ -249,6 +260,15 @@ export async function appendMessage(admin, { customerId, threadId, author, text 
     writeCustomerThreads(admin, customer.id, newCustomerThreads),
     writeInbox(admin, inbox.shopId, newInboxThreads),
   ]);
+
+  logQuestion("question.message_added", {
+    thread_id: threadId,
+    customer_id: customer.id,
+    author,
+    status,
+    message_length: cleanedText.length,
+    message_count: updatedMessages.length,
+  });
 
   return { thread: updatedThread, customer };
 }
@@ -306,6 +326,13 @@ export async function promoteToFaq(admin, { customerId, threadId, question, answ
     writeInbox(admin, inbox.shopId, newInboxThreads),
   ]);
 
+  logQuestion("question.promoted", {
+    thread_id: threadId,
+    customer_id: customer.id,
+    product_id: thread.product_id,
+    faq_size: mergedItems.length,
+  });
+
   return { thread: updatedThread };
 }
 
@@ -322,4 +349,9 @@ export async function deleteThread(admin, { customerId, threadId }) {
     writeCustomerThreads(admin, customer.id, newCustomerThreads),
     writeInbox(admin, inbox.shopId, newInboxThreads),
   ]);
+
+  logQuestion("question.deleted", {
+    thread_id: threadId,
+    customer_id: customer.id,
+  });
 }

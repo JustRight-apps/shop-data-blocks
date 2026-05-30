@@ -14,6 +14,9 @@ export default async function handleRequest(
   reactRouterContext,
 ) {
   addDocumentResponseHeaders(request, responseHeaders);
+  // just-right.net only serves the embedded app + APIs — it should never be
+  // indexed. The public marketing site will live on a separate domain.
+  responseHeaders.set("X-Robots-Tag", "noindex, nofollow");
   const userAgent = request.headers.get("user-agent");
   const callbackName = isbot(userAgent ?? "") ? "onAllReady" : "onShellReady";
 

@@ -21,7 +21,7 @@ api_version = "2026-04"
   uri = "/webhooks/gdpr"
 
 [access_scopes]
-scopes = "write_markets,write_products,write_content,read_customers,write_customers"
+scopes = "write_markets,write_products,write_content,read_customers,write_customers,write_app_proxy"
 optional_scopes = [ ]
 use_legacy_install_flow = false
 

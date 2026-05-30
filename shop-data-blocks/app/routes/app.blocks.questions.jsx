@@ -15,6 +15,7 @@ import {
   QUESTION_STATUS,
 } from "../blocks/questions/constants";
 import { sendMerchantAnsweredEmail } from "../lib/email.server";
+import { logQuestionError } from "../lib/log.server";
 
 const FILTER_LABELS = {
   all: "All",
@@ -97,7 +98,10 @@ export const action = async ({ request }) => {
         });
       }
     } catch (error) {
-      console.warn("Failed to send customer notification email:", error.message);
+      logQuestionError("question.merchant_reply.email_failed", error, {
+        thread_id: threadId,
+        customer_id: customerId,
+      });
     }
 
     return { intent, ok: true };
